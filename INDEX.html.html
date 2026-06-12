@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shakthi Ithiri - Premium Management Engine</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* Modern Design System Tokens & Enhanced Palette */
+        :root {
+            /* Dark Theme Tokens (Default) */
+            --bg-canvas: #0b0f19;
+            --surface-card: rgba(22, 30, 49, 0.75);
+            --surface-glass: rgba(15, 23, 42, 0.45);
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.3);
+            --primary-hover: #4f46e5;
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.15);
+            --danger: #f43f5e;
+            --danger-bg: rgba(244, 63, 94, 0.15);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-md: 0 12px 40px -4px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.2);
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --table-th-bg: #111827;
+            --sidebar-bg: rgba(11, 15, 25, 0.7);
+            
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Embedded Counter Variables styled for Dark Mode */
+            --counter-card-bg: rgba(30, 41, 59, 0.4);
+            --counter-border: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Light Theme Tokens */
+        [data-theme="light"] {
+            --bg-canvas: #f1f5f9;
+            --surface-card: rgba(255, 255, 255, 0.8);
+            --surface-glass: rgba(241, 245, 249, 0.5);
+            --primary: #4f46e5;
+            --primary-glow: rgba(79, 70, 229, 0.15);
+            --primary-hover: #4338ca;
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --danger: #e11d48;
+            --danger-bg: rgba(225, 29, 72, 0.1);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 12px 40px -4px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 25px rgba(79, 70, 229, 0.1);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --table-th-bg: #f8fafc;
+            --sidebar-bg: rgba(248, 250, 252, 0.85);
+
+            /* Embedded Counter Variables styled for Light Mode */
+            --counter-card-bg: #ffffff;
+            --counter-border: #e2e8f0;
+        }
+
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 24px;
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Ambient Background Canvas Engine */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- IMMERSIVE INTERFACE GLASS PORTAL --- */
+        .login-container { 
+            background: var(--surface-card); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 50px 40px; 
+            border-radius: var(--radius-lg); 
+            box-shadow: var(--shadow-md), var(--shadow-glow);
+            width: 100%; 
+            max-width: 420px; 
+            border: 1px solid var(--border-color);
+            display: block;
+            position: relative;
+            z-index: 10;
+            animation: entranceScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes entranceScale {
+            from { opacity: 0; transform: scale(0.95) translateY(40px) filter: blur(8px); }
+            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+
+        @keyframes alertShakeMatrix {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+        .login-container.shake-alert {
+            animation: alertShakeMatrix 0.4s ease-in-out;
+            border-color: var(--danger);
+            box-shadow: 0 0 30px rgba(244, 63, 94, 0.3);
+        }
+
+        .login-container h2 { 
+            color: var(--text-main); 
+            text-align: center; 
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 0 35px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, var(--text-main), var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .input-box { 
+            width: 100%; 
+            padding: 14px 18px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius-md); 
+            font-size: 15px; 
+            box-sizing: border-box;
+            transition: var(--transition-fast);
+            background: var(--input-bg);
+            color: var(--text-main);
+        }
+        .input-box:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: var(--input-bg);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+        .toggle-password {
+            position: absolute;
+            right: 18px;
+            top: 42px;
+            cursor: pointer;
+            color: var(--text-muted) !important;
+            font-size: 18px;
+            user-select: none;
+            transition: var(--transition-fast);
+            background: none;
+            -webkit-text-fill-color: initial !important;
+        }
+        .toggle-password:hover {
+            color: var(--text-main) !important;
+            transform: scale(1.15);
+        }
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            margin-top: 12px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        .btn-primary:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.45);
+            filter: brightness(1.1);
+        }
+        .btn-primary:active {
+            transform: translateY(1px) scale(0.99);
+        }
+        
+        .error-message, .success-message { 
+            text-align: center; padding: 14px; border-radius: var(--radius-md);
+            margin-bottom: 25px; font-size: 14px; display: none; font-weight: 500;
+            border: 1px solid transparent;
+        }
+        .error-message { color: var(--danger); background-color: var(--danger-bg); border-color: rgba(244, 63, 94, 0.2); }
+        .success-message { color: var(--success); background-color: var(--success-bg); border-color: rgba(16, 185, 129, 0.2); }
+
+        /* --- DASHBOARD LAYOUT MANAGEMENT PANELS --- */
+        .dashboard-wrapper {
+            display: none;
+            width: 100%;
+            max-width: 1280px;
+            background: var(--surface-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            opacity: 0;
+            z-index: 10;
+            position: relative;
+        }
+        .dashboard-wrapper.active-view {
+            display: block;
+            animation: dashboardReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes dashboardReveal {
+            from { opacity: 0; transform: scale(0.98) translateY(30px) filter: blur(5px); }
+            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+
+        .dashboard-body {
+            display: flex;
+            min-height: 760px;
+        }
+
+        /* Sidebar Glass Architecture Navigation */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            padding: 35px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-right: 1px solid var(--border-color);
+        }
+        .sidebar-brand {
+            color: var(--text-main);
+            font-size: 22px;
+            font-weight: 800;
+            padding: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+        
+        .sidebar-brand::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 12px var(--success);
+            animation: livePulseBeacon 2s infinite;
+        }
+        @keyframes livePulseBeacon {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 16px var(--success); }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        .sidebar-btn {
+            background: transparent;
+            border: none;
+            padding: 14px 18px;
+            color: var(--text-muted);
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .sidebar-btn:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+            padding-left: 24px;
+        }
+        .sidebar-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Modernized Theme Switch Component */
+        .theme-switch-btn {
+            background: rgba(30, 41, 59, 0.1);
+            border: 1px solid var(--border-color);
+            padding: 14px 18px;
+            color: var(--text-main);
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: auto;
+        }
+        .theme-switch-btn:hover {
+            background: rgba(30, 41, 59, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Main Workspace Engine Layout */
+        .main-content {
+            flex: 1;
+            padding: 45px;
+            background: rgba(15, 23, 42, 0.02);
+            overflow-y: auto;
+        }
+        .content-header {
+            margin-bottom: 35px;
+        }
+        .content-header h2 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+        .content-header p {
+            margin: 8px 0 0 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Dynamic Metrics Engine layout */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .metric-card {
+            background: var(--surface-glass);
+            padding: 26px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .metric-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: var(--shadow-glow);
+        }
+        .metric-card-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+        }
+        .metric-card-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-top: 8px;
+        }
+
+        /* Modernized Interactive Filtering Systems UI */
+        .search-box { 
+            width: 100%; 
+            padding: 18px 22px; 
+            margin-bottom: 25px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius-md); 
+            font-size: 16px; 
+            box-sizing: border-box; 
+            background: var(--input-bg);
+            color: var(--text-main);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            transition: var(--transition-smooth);
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow), inset 0 2px 4px rgba(0,0,0,0.05);
+            background: var(--input-bg);
+        }
+
+        .tab-panel { 
+            display: none; 
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        .tab-panel.active { 
+            display: block; 
+            animation: panelEntranceTransition 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes panelEntranceTransition {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Database Matrix Architecture Frames Elements styling */
+        .table-card {
+            background: var(--surface-glass);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .table-wrapper { max-height: 480px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { 
+            background: var(--table-th-bg); 
+            padding: 18px 24px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 5;
+        }
+        td { padding: 18px 24px; font-size: 15px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+        tr:last-child td { border-bottom: none; }
+        
+        tr { transition: background-color 0.2s ease; }
+        tr:hover td { background-color: rgba(255, 255, 255, 0.03); }
+        
+        .cascading-row-item {
+            animation: dynamicRowReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        @keyframes dynamicRowReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page-badge { 
+            background-color: var(--primary-glow); color: var(--primary); 
+            padding: 6px 14px; border-radius: 8px; font-weight: 700; font-size: 13px;
+            display: inline-block;
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            transition: var(--transition-fast);
+        }
+        [data-theme="dark"] .page-badge {
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+        }
+        .page-badge:hover {
+            transform: scale(1.05) translateY(-1px);
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        .no-results { text-align: center; padding: 45px; color: var(--danger); font-weight: 500; display: none; }
+
+        .btn-delete {
+            background-color: transparent;
+            color: var(--danger);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition-fast);
+        }
+        .btn-delete:hover {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .form-sheet-card {
+            background: var(--surface-glass);
+            padding: 40px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            max-width: 600px;
+        }
+
+        .btn-export {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            text-align: center;
+        }
+        .btn-export:hover {
+            background-color: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        /* --- ADVANCED ENGINE EXTENSIONS --- */
+        .total-display {
+            background: linear-gradient(135deg, #111827 0%, #030712 100%);
+            color: #f5f5f5;
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 35px;
+            box-shadow: var(--shadow-md), var(--shadow-glow);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+        [data-theme="light"] .total-display {
+            background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
+        }
+        
+        .total-display-glow-bar {
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 4px; width: 0%;
+            background: linear-gradient(to right, var(--success), var(--primary));
+            box-shadow: 0 0 12px var(--success);
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .total-display h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin: 0 0 8px 0;
+        }
+        [data-theme="light"] .total-display h3 { color: #e0e7ff; }
+
+        .total-display .amount {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -1.5px;
+            display: inline-block;
+            transition: transform 0.1s ease;
+        }
+        [data-theme="light"] .total-display .amount { color: #fef08a; }
+
+        .total-display .word-representation {
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-top: 14px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+        [data-theme="light"] .total-display .word-representation { color: #e0e7ff; }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin: 35px 0 16px 0;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .denominations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .denom-row {
+            background: var(--counter-card-bg);
+            border: 1px solid var(--counter-border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+            transform-style: preserve-3d;
+        }
+        
+        .denom-row:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .denom-row.active-counting {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-glow);
+            transform: scale(1.02) translateZ(10px);
+            background: rgba(99, 102, 241, 0.04);
+        }
+
+        .label-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-grow: 1;
+        }
+
+        .denom-badge {
+            font-weight: 700;
+            padding: 10px 14px;
+            border-radius: 8px;
+            min-width: 85px;
+            text-align: center;
+            font-size: 0.95rem;
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.15);
+            transition: transform 0.2s ease;
+        }
+        .denom-row:hover .denom-badge {
+            transform: scale(1.05);
+        }
+
+        .multiply-sign {
+            color: var(--text-muted);
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .counter-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .counter-input {
+            width: 85px;
+            padding: 10px 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 700;
+            outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            transition: var(--transition-fast);
+        }
+        .counter-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        .counter-input::-webkit-outer-spin-button,
+        .counter-input::-webkit-inner-spin-button {
+            -webkit-appearance: none; margin: 0;
+        }
+        .counter-input[type=number] { -moz-appearance: textfield; }
+
+        .row-total {
+            font-weight: 800;
+            color: var(--text-muted);
+            min-width: 100px;
+            text-align: right;
+            font-size: 1.05rem;
+            transition: color 0.3s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .denom-row.active-counting .row-total {
+            color: var(--text-main);
+            transform: scale(1.05);
+        }
+
+        .counter-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-group { display: flex; gap: 12px; }
+        .btn-counter-clear { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--border-color); }
+        .btn-counter-clear:hover { filter: brightness(1.15); transform: translateY(-1px); }
+        .btn-counter-save { background: var(--success-bg); color: var(--success); border: 1px solid var(--border-color); }
+        .btn-counter-save:hover { filter: brightness(1.15); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+
+        /* Report Generator Utility Card */
+        .report-utility-card {
+            background: var(--surface-glass);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .report-select {
+            background: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+        }
+        .btn-report-dl {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-fast);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .btn-report-dl:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.45);
+        }
+
+        /* Ledger History Interactivity Engine UI styling */
+        .clickable-row { cursor: pointer; transition: background-color 0.2s; }
+        .details-row { background-color: rgba(15, 23, 42, 0.4); display: none; }
+        .details-container { 
+            padding: 20px; 
+            border-left: 4px solid var(--primary);
+            animation: drawerSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes drawerSlideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .details-heading { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 0.5px; }
+        .breakdown-chips-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        
+        .breakdown-chip {
+            background: var(--input-bg); border: 1px solid var(--border-color);
+            padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+            color: var(--text-main); display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .breakdown-chip .chip-label { font-weight: 700; color: var(--primary); }
+        .breakdown-chip .chip-count { background: var(--border-color); padding: 2px 6px; border-radius: 4px; font-weight: 800; color: var(--text-main); }
+        .breakdown-chip .chip-total { color: var(--success); font-weight: 700; }
+
+        .btn-delete-single { background: none; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: var(--transition-fast); }
+        .btn-delete-single:hover { background: var(--danger-bg); color: var(--danger); transform: scale(1.1); }
+        .btn-delete-all { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--border-color); padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition-fast); }
+        .btn-delete-all:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+        /* Denomination Colored Badges Engine styling */
+        .bg-5000 { background-color: rgba(217, 119, 6, 0.15); color: #fbbf24; border: 1px solid rgba(217, 119, 6, 0.3); }
+        .bg-2000 { background-color: rgba(147, 51, 234, 0.15); color: #c084fc; border: 1px solid rgba(147, 51, 234, 0.3); }
+        .bg-1000 { background-color: rgba(22, 163, 74, 0.15); color: #4ade80; border: 1px solid rgba(22, 163, 74, 0.3); }
+        .bg-500  { background-color: rgba(75, 85, 99, 0.15); color: #9ca3af; border: 1px solid rgba(75, 85, 99, 0.3); }
+        .bg-100  { background-color: rgba(234, 88, 12, 0.15); color: #f97316; border: 1px solid rgba(234, 88, 12, 0.3); }
+        .bg-5   { background-color: rgba(2, 132, 199, 0.15); color: #38bdf8; border: 1px solid rgba(2, 132, 199, 0.3); }
+        .bg-20   { background-color: rgba(192, 132, 252, 0.15); color: #e879f9; border: 1px solid rgba(192, 132, 252, 0.3); }
+        .bg-10   { background-color: rgba(100, 116, 139, 0.15); color: #cbd5e1; border: 1px solid rgba(100, 116, 139, 0.3); }
+        .bg-5    { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .bg-2    { background-color: rgba(71, 85, 105, 0.15); color: #94a3b8; border: 1px solid rgba(71, 85, 105, 0.3); }
+        .bg-1    { background-color: rgba(202, 138, 4, 0.15); color: #facc15; border: 1px solid rgba(202, 138, 4, 0.3); }
+
+        @media (max-width: 900px) {
+            .dashboard-body { flex-direction: column; }
+            .sidebar { width: 100%; box-sizing: border-box; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .theme-switch-btn { margin-top: 20px; }
+            .btn-export { margin-top: 10px; }
+            .counter-actions { flex-direction: column-reverse; gap: 15px; text-align: center; }
+            .btn-group { width: 100%; justify-content: center; }
+            .report-utility-card { flex-direction: column; align-items: stretch; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="login-container" id="loginView">
+    <h2>🔑 Access Portal</h2>
+    <div id="errorMessage" class="error-message">Invalid Portal Access Credentials.</div>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="username">Portal Operator Identifier</label>
+            <input type="text" id="username" class="input-box" placeholder="Username ID" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Security Access Key Phrase</label>
+            <input type="password" id="password" class="input-box" placeholder="Access Password" required autocomplete="current-password">
+            <span id="togglePassword" class="toggle-password">👁</span>
+        </div>
+
+        <button type="submit" class="btn-primary">Authenticate Identity</button>
+    </form>
+    <div class="footer-text" style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 20px;">Secure Access Control Matrix Enforced</div>
+</div>
+
+<div class="dashboard-wrapper" id="mainView">
+    <div class="dashboard-body">
+        
+        <div class="sidebar">
+            <div class="sidebar-brand">📖 Shakthi Portal</div>
+            <button class="sidebar-btn" id="nav-searchTab" onclick="switchTab('searchTab')">⌕ Search Engine</button>
+            <button class="sidebar-btn" id="nav-entryTab" onclick="switchTab('entryTab')">📥 Data Entry Sheet</button>
+            <button class="sidebar-btn active" id="nav-moneyTab" onclick="switchTab('moneyTab')">💵 LKR Cash Counter</button>
+            <button class="sidebar-btn" id="nav-deleteTab" onclick="switchTab('deleteTab')">🗑️ Delete Engine</button>
+            
+            <button class="theme-switch-btn" id="themeToggleBtn" onclick="toggleThemeEngine()">🌙 Dark Mode Active</button>
+            <button class="btn-export" onclick="exportPermanentDatabaseHTML()">💾 Download Source Backup</button>
+        </div>
+
+        <div class="main-content">
+            
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-card-label">Total Asset Records</div>
+                    <div class="metric-card-value" id="metric-total">0</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-card-label">Page Maps Active</div>
+                    <div class="metric-card-value" id="metric-pages">0</div>
+                </div>
+            </div>
+
+            <div id="searchTab" class="tab-panel">
+                <div class="content-header">
+                    <h2>Live Search Matrix</h2>
+                    <p>Execute indexing calculations immediately over the internal operational registry.</p>
+                </div>
+                <input type="text" id="searchInput" class="search-box" placeholder="Filter rows instantly by matching Name, ID, or Page layout values...">
+                
+                <div class="table-card">
+                    <div class="table-wrapper">
+                        <table id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID Number</th>
+                                    <th>Registry Subject Name</th>
+                                    <th>Mapped Page</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="noResults" class="no-results">No registry assets match the requested filter query.</div>
+                </div>
+            </div>
+
+            <div id="entryTab" class="tab-panel">
+                <div class="content-header">
+                    <h2>Data Entry Sheet</h2>
+                    <p>Safely structure and commit an authorized data record layout entry into memory storage.</p>
+                </div>
+                <div class="form-sheet-card">
+                    <div id="successMessage" class="success-message">Asset row successfully mounted into live environment state and saved!</div>
+                    <form id="dataEntryForm">
+                        <div class="form-group">
+                            <label for="newIdNo">Assigned Asset ID No</label>
+                            <input type="text" id="newIdNo" class="input-box" placeholder="Optional (e.g. 36450)">
+                        </div>
+                        <div class="form-group">
+                            <label for="newName">Subject Identity Title Name</label>
+                            <input type="text" id="newName" class="input-box" placeholder="e.g. RATNAYAKE RAMP" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPage">Document Leaf Index Mapping (Page)</label>
+                            <input type="text" id="newPage" class="input-box" placeholder="e.g. 142 or S09-50" required>
+                        </div>
+                        <button type="submit" class="btn-primary" style="margin-top:15px;">Inject Entry Record</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="moneyTab" class="tab-panel active">
+                <div class="content-header">
+                    <h2>Advanced LKR Cash Counter Engine</h2>
+                    <p>Calculate system cash streams with high-precision physics tracking, structural odometer loops, and history ledger cards.</p>
+                </div>
+
+                <div class="total-display" id="totalDisplayPanel">
+                    <h3>Grand Total Asset Balance</h3>
+                    <div class="amount" id="grandTotal">Rs. 0.00</div>
+                    <div class="word-representation" id="totalInWords">Zero Rupees Only</div>
+                    <div class="total-display-glow-bar" id="loadVolumeGlowBar"></div>
+                </div>
+
+                <div class="section-title">Currency Banknotes</div>
+                <div class="denominations-grid" id="notesGrid"></div>
+
+                <div class="section-title">Government Issued Coins</div>
+                <div class="denominations-grid" id="coinsGrid"></div>
+
+                <div class="counter-actions">
+                    <div class="note-counter-summary" id="countSummary" style="color: var(--text-muted); font-weight: 600;">Total Items Counted: 0 units</div>
+                    <div class="btn-group">
+                        <button class="btn-primary btn-counter-clear" onclick="clearAllCounterInputs()">Reset Fields</button>
+                        <button class="btn-primary btn-counter-save" onclick="saveCounterRecord()">Commit Ledger Log</button>
+                    </div>
+                </div>
+
+                <div class="report-utility-card">
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--text-muted);">Monthly Reporting Core</span>
+                        <span style="font-size: 14px; color: var(--text-main); font-weight: 500;">Select Target Extraction Parameters:</span>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <select id="reportMonthSelect" class="report-select"></select>
+                        <button class="btn-report-dl" onclick="downloadMonthlyPDFReport()">
+                            <span>📊</span> Download PDF Audit Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-card" style="margin-top: 40px; padding: 25px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0; color: var(--text-main); font-size: 1.1rem; font-weight: 700;">Secure Balance Sheet History Ledger</h3>
+                        <button class="btn-delete-all" onclick="secureClearPermanentHistory()">Purge All History</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date & Time Timestamp</th>
+                                    <th>Total Items</th>
+                                    <th>Grand Total Valuation</th>
+                                    <th style="width: 70px; text-align: center;">Execution</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="deleteTab" class="tab-panel">
+                <div class="content-header">
+                    <h2>Row Deletion Console</h2>
+                    <p>Destructure tracking points directly from live active monitoring frames.</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID Number</th>
+                                    <th>Subject Identity Title Name</th>
+                                    <th>Page Link</th>
+                                    <th style="text-align: center; width: 120px;">Execution</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deleteTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- VISUAL ARCHITECTURE THEME CONTROLLER ENGINE ---
+    function initThemeEngine() {
+        const savedTheme = localStorage.getItem('shakthi_theme_variant') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeToggleButtonUI(savedTheme);
+    }
+
+    function toggleThemeEngine() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const processingTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', processingTheme);
+        localStorage.setItem('shakthi_theme_variant', processingTheme);
+        updateThemeToggleButtonUI(processingTheme);
+    }
+
+    function updateThemeToggleButtonUI(theme) {
+        const btn = document.getElementById('themeToggleBtn');
+        if(!btn) return;
+        btn.innerHTML = theme === 'dark' ? '🌙 Dark Mode Active' : '☀️ Light Mode Active';
+    }
+
+    initThemeEngine();
+
+    // --- CANVAS PARTICLES ANIMATION ENGINE ---
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particlesArray = [];
+    const numberOfParticles = 65;
+
+    let mouseCoords = { x: null, y: null, radius: 140 };
+    window.addEventListener('mousemove', (e) => { mouseCoords.x = e.x; mouseCoords.y = e.y; });
+    window.addEventListener('mouseout', () => { mouseCoords.x = null; mouseCoords.y = null; });
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 0.4 - 0.2;
+            this.speedY = Math.random() * 0.4 - 0.2;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+            if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+
+            if (mouseCoords.x != null) {
+                let dx = this.x - mouseCoords.x;
+                let dy = this.y - mouseCoords.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < mouseCoords.radius) {
+                    let force = (mouseCoords.radius - distance) / mouseCoords.radius;
+                    this.x += (dx / distance) * force * 2;
+                    this.y += (dy / distance) * force * 2;
+                }
+            }
+        }
+        draw() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            ctx.fillStyle = isDark ? 'rgba(99, 102, 241, 0.25)' : 'rgba(79, 70, 229, 0.15)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particlesArray = [];
+        for (let i = 0; i < numberOfParticles; i++) {
+            particlesArray.push(new Particle());
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw();
+            
+            for (let j = i; j < particlesArray.length; j++) {
+                let dx = particlesArray[i].x - particlesArray[j].x;
+                let dy = particlesArray[i].y - particlesArray[j].y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 110) {
+                    const alphaValue = isDark ? (0.12 - (distance/110)*0.12) : (0.07 - (distance/110)*0.07);
+                    ctx.strokeStyle = `rgba(99, 102, 241, ${alphaValue})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                    ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    initParticles();
+    animateParticles();
+
+    // System Components
+    const loginView = document.getElementById('loginView');
+    const mainView = document.getElementById('mainView');
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Registry Seeds Storage Data Configuration
+    const defaultDataSeed = [{"no": "35634", "name": "NILMINI MAD", "page": "1"}, {"no": "35639", "name": "HGT Anuruddika", "page": "3"}, {"no": "35654", "name": "KPK SUBASINHE", "page": "5"}, {"no": "34319", "name": "K CHANDRASENA", "page": "149"}, {"no": "33263", "name": "BANDARAMANIKE RMN", "page": "10"}, {"no": "33307", "name": "SAMARANAYAKA MW", "page": "175"}, {"no": "33152", "name": "ALAHAKOON AMM", "page": "17"}, {"no": "33319", "name": "KUMARA SER", "page": "143"}, {"no": "35110", "name": "WILSON SMC", "page": "91"}, {"no": "34321", "name": "JAYASOORIYA RSL", "page": "183"}, {"no": "33196", "name": "KARAWITA KWDKW", "page": "171"}, {"no": "33177", "name": "PRIYANTHA HMP", "page": "173"}, {"no": "33280", "name": "PRIYADARSHANI LADM", "page": "127"}, {"no": "33325", "name": "BANDA MRN", "page": "S09-07"}, {"no": "34362", "name": "INDRANI KJ", "page": "137"}, {"no": "33171", "name": "RAJAPAKSHA RGD", "page": "145"}, {"no": "33330", "name": "LANSAKARA LMNP", "page": "139"}, {"no": "35733", "name": "GUNATHILAKA. RBSWM", "page": "48"}, {"no": "33246", "name": "PERUMBADAGE C", "page": "167"}, {"no": "33169", "name": "PUNYAWARDANA RMNDK", "page": "S09-11"}, {"no": "34363", "name": "WITHANA PWMS", "page": "155"}, {"no": "33270", "name": "KUMARA PTUA", "page": "187"}, {"no": "34311", "name": "HEMALATHA SAA", "page": "181"}, {"no": "34792", "name": "KUMARI MAIN", "page": "189"}, {"no": "35752", "name": "ANULAWATHI WH", "page": "153"}, {"no": "33272", "name": "DAHANAYAKA DASS", "page": "61"}, {"no": "33291", "name": "LEELAWATHI EA", "page": "63"}, {"no": "35774", "name": "HERATH HMRK", "page": "67"}, {"no": "33256", "name": "KUMARA SSS", "page": "135"}, {"no": "35609", "name": "RANATHUNGA SHCM", "page": "151"}, {"no": "35649", "name": "PANAWALA PVASP", "page": "71"}, {"no": "35784", "name": "WEERAKOON WMSN", "page": "73"}, {"no": "33323", "name": "ROHANA WP", "page": "169"}, {"no": "35789", "name": "SUBRAMANIYAM DA", "page": "77"}, {"no": "35459", "name": "SUGANDIKA MAM", "page": "79"}, {"no": "33237", "name": "SUMATHIPALA WDDP", "page": "81"}, {"no": "33232", "name": "KUMARA SCA", "page": "87"}, {"no": "33314", "name": "SUBHASINGHE SMHJ", "page": "185"}, {"no": "34790", "name": "THAKSHILA HMN", "page": "165"}, {"no": "35476", "name": "KUMARA WDSP", "page": "75"}, {"no": "35831", "name": "SEUWANDI VKAK", "page": "97"}, {"no": "35836", "name": "BANDARA HPGNP", "page": "99"}, {"no": "35842", "name": "KURUNERU ID", "page": "101"}, {"no": "35845", "name": "SAMARAKOON SMA", "page": "S09-15"}, {"no": "33233", "name": "SRIYANI CLR", "page": "S09-17"}, {"no": "33266", "name": "DILHANI MA", "page": "179"}, {"no": "33182", "name": "DAMAYANTHI DI", "page": "111"}, {"no": "33298", "name": "MALANI UGW", "page": "115"}, {"no": "33157", "name": "BANDA JM", "page": "117"}, {"no": "33318", "name": "CHAMARA SMT", "page": "119"}, {"no": "35476", "name": "KUMARA WDSP", "page": "121"}, {"no": "35857", "name": "KUMARA NBMR", "page": "123"}, {"no": "33159", "name": "ABERATHNA RPMK", "page": "125"}, {"no": "35846", "name": "SAMARAKOON SMA", "page": "129"}, {"no": "35871", "name": "DISSANAYAKA UGS", "page": "131"}, {"no": "33324", "name": "LAKMAL APC", "page": "133"}, {"no": "35997", "name": "KUMARI PHCR", "page": "177"}, {"no": "33204", "name": "RANASINGHE KN", "page": "163"}, {"no": "", "name": "W.M.S.Nisansala", "page": "83"}, {"no": "", "name": "R.M.N.Sisira Kumara", "page": "85"}, {"no": "35848", "name": "SENEVIRATHNA. AMG", "page": "113"}, {"no": "36007", "name": "KIRIWATHTHUDUWA KDSS", "page": "S09-03"}, {"no": "33153", "name": "NALANI MP", "page": "S09-05"}, {"no": "36034", "name": "MUDIYANSE RM", "page": "S09-09"}, {"no": "33169", "name": "PUNYAWARDHANA PMWDK", "page": "S09-11"}];
+
+    let dataset = JSON.parse(localStorage.getItem('shakthi_runtime_cache')) || defaultDataSeed;
+
+    function saveDatabaseStateLocally() {
+        localStorage.setItem('shakthi_runtime_cache', JSON.stringify(dataset));
+    }
+
+    togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+    });
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (usernameInput.value.trim() === "admin" && passwordInput.value.trim() === "shakthi123") {
+            errorMessage.style.display = 'none';
+            loginView.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+            loginView.style.opacity = '0';
+            loginView.style.transform = 'scale(0.95) translateY(-20px)';
+            
+            setTimeout(() => {
+                loginView.style.display = 'none';
+                mainView.classList.add('active-view');
+                initAppPortalEngine();
+            }, 450);
+        } else {
+            errorMessage.style.display = 'block';
+            passwordInput.value = '';
+            loginView.classList.add('shake-alert');
+            setTimeout(() => loginView.classList.remove('shake-alert'), 400);
+        }
+    });
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+        document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById('nav-' + tabId).classList.add('active');
+    }
+
+    function initAppPortalEngine() {
+        const tableBody = document.getElementById('tableBody');
+        const deleteTableBody = document.getElementById('deleteTableBody');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+        const dataEntryForm = document.getElementById('dataEntryForm');
+        const successMessage = document.getElementById('successMessage');
+
+        function updateMetrics() {
+            animateCounterDigits('metric-total', dataset.length);
+            animateCounterDigits('metric-pages', new Set(dataset.map(item => item.page)).size);
+        }
+
+        window.renderAll = function() {
+            updateMetrics();
+            const term = searchInput.value.toLowerCase().trim();
+            const filtered = dataset.filter(i => 
+                i.name.toLowerCase().includes(term) || 
+                (i.no && i.no.toLowerCase().includes(term)) || 
+                i.page.toLowerCase().includes(term)
+            );
+
+            tableBody.innerHTML = filtered.map((item, index) => `
+                <tr class="cascading-row-item" style="animation-delay: ${Math.min(index * 15, 200)}ms">
+                    <td style="color: ${item.no ? 'var(--text-main)' : 'var(--text-muted)'}; font-weight:600;">${item.no || 'UNASSIGNED'}</td>
+                    <td><strong>${item.name}</strong></td>
+                    <td><span class="page-badge">${item.page}</span></td>
+                </tr>
+            `).join('');
+            
+            noResults.style.display = filtered.length ? 'none' : 'block';
+            document.getElementById('dataTable').style.display = filtered.length ? 'table' : 'none';
+
+            deleteTableBody.innerHTML = dataset.map((item, idx) => `
+                <tr class="cascading-row-item" style="animation-delay: ${Math.min(idx * 12, 180)}ms">
+                    <td style="font-weight:600;">${item.no || '—'}</td>
+                    <td><strong>${item.name}</strong></td>
+                    <td><span class="page-badge">${item.page}</span></td>
+                    <td style="text-align: center;">
+                        <button class="btn-delete" onclick="dispatchDeleteRow(${idx})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        searchInput.addEventListener('input', renderAll);
+
+        dataEntryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            dataset.unshift({
+                no: document.getElementById('newIdNo').value.trim(),
+                name: document.getElementById('newName').value.trim(),
+                page: document.getElementById('newPage').value.trim()
+            });
+            saveDatabaseStateLocally(); 
+            dataEntryForm.reset();
+            successMessage.style.display = 'block';
+            setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
+            renderAll();
+        });
+
+        window.dispatchDeleteRow = function(targetIndex) {
+            if (confirm(`Are you sure you want to permanently delete "${dataset[targetIndex].name}"?`)) {
+                dataset.splice(targetIndex, 1);
+                saveDatabaseStateLocally();
+                renderAll();
+            }
+        };
+
+        buildCounterGrids();
+        renderSavedHistory();
+        populateReportMonths();
+        renderAll();
+    }
+
+    function animateCounterDigits(id, targetValue) {
+        const element = document.getElementById(id);
+        if (!element) return;
+        let start = parseInt(element.textContent) || 0;
+        if (start === targetValue) return;
+        let duration = 600;
+        let frameTime = null;
+
+        function step(timestamp) {
+            if (!frameTime) frameTime = timestamp;
+            const progress = Math.min((timestamp - frameTime) / duration, 1);
+            element.textContent = Math.floor((1 - Math.pow(1 - progress, 3)) * (targetValue - start) + start);
+            if (progress < 1) window.requestAnimationFrame(step);
+            else element.textContent = targetValue;
+        }
+        window.requestAnimationFrame(step);
+    }
+
+    // --- ENHANCED HIGH-ANIMATION CASH COUNTER INTERNALS ---
+    const MASTER_PASSWORD = "206206"; 
+    const banknoteDenoms = [5000, 2000, 1000, 500, 100, 50, 20];
+    const coinDenoms = [10, 5, 2, 1];
+    const allDenoms = [...banknoteDenoms, ...coinDenoms];
+
+    let currentGrandTotal = 0;
+    let currentItemCount = 0;
+
+    function buildCounterGrids() {
+        const notesGrid = document.getElementById('notesGrid');
+        const coinsGrid = document.getElementById('coinsGrid');
+        notesGrid.innerHTML = ''; coinsGrid.innerHTML = '';
+
+        buildGridStructure(banknoteDenoms, notesGrid);
+        buildGridStructure(coinDenoms, coinsGrid);
+    }
+
+    function buildGridStructure(elementsArray, targetContainer) {
+        elementsArray.forEach(value => {
+            const card = document.createElement('div');
+            card.className = `denom-row`;
+            card.id = `row-wrapper-${value}`;
+            card.innerHTML = `
+                <div class="label-group">
+                    <span class="denom-badge bg-${value}">Rs. ${value}</span>
+                    <span class="multiply-sign">×</span>
+                    <div class="counter-input-container">
+                        <input type="number" 
+                               class="counter-input" 
+                               id="input-${value}"
+                               placeholder="0" 
+                               min="0"
+                               step="1"
+                               data-denom="${value}" 
+                               onkeydown="blockNonNumericKeys(event)"
+                               oninput="processCalculations(${value})">
+                    </div>
+                </div>
+                <div class="row-total" id="total-${value}">0.00</div>
+            `;
+            targetContainer.appendChild(card);
+        });
+    }
+
+    function blockNonNumericKeys(event) {
+        if (['e', 'E', '+', '-', '.'].includes(event.key)) event.preventDefault();
+    }
+
+    function processCalculations(activeDenom = null) {
+        let cumulativeTotal = 0;
+        let cumulativeItems = 0;
+
+        allDenoms.forEach(denomination => {
+            const inputField = document.getElementById(`input-${denomination}`);
+            const rowWrapper = document.getElementById(`row-wrapper-${denomination}`);
+            let count = parseInt(inputField.value, 10) || 0;
+
+            if (count < 0) { count = 0; inputField.value = ''; }
+
+            if (count > 0) {
+                rowWrapper.classList.add('active-counting');
+            } else {
+                rowWrapper.classList.remove('active-counting');
+            }
+
+            const rowVal = denomination * count;
+            cumulativeTotal += rowVal;
+            cumulativeItems += count;
+
+            if (activeDenom === denomination) {
+                animateRowTotalValue(`total-${denomination}`, rowVal);
+            } else if (!activeDenom) {
+                document.getElementById(`total-${denomination}`).innerText = rowVal.toLocaleString('en-US', { minimumFractionDigits: 2 });
+            }
+        });
+
+        currentItemCount = cumulativeItems;
+        currentGrandTotal = cumulativeTotal;
+
+        // Animate Display Hub Outputs
+        animateGrandDisplayTotal(cumulativeTotal);
+        document.getElementById('countSummary').innerText = `Total Items Counted: ${cumulativeItems} units`;
+        document.getElementById('totalInWords').innerText = convertToLankanWords(cumulativeTotal).replace(/\s+/g, ' ').trim() + " Only";
+
+        // Dynamic System Status Capacity Light bar mapping logic
+        const maxCapacityThreshold = 500000; 
+        const filledPercentage = Math.min((cumulativeTotal / maxCapacityThreshold) * 100, 100);
+        document.getElementById('loadVolumeGlowBar').style.width = `${filledPercentage}%`;
+    }
+
+    function animateRowTotalValue(elementId, targetVal) {
+        const targetElement = document.getElementById(elementId);
+        targetElement.innerText = targetVal.toLocaleString('en-US', { minimumFractionDigits: 2 });
+        targetElement.style.transform = "scale(1.25)";
+        setTimeout(() => { targetElement.style.transform = "scale(1)"; }, 150);
+    }
+
+    function animateGrandDisplayTotal(targetVal) {
+        const grandDisplay = document.getElementById('grandTotal');
+        let currentVal = parseFloat(grandDisplay.innerText.replace(/[^\d.]/g, '')) || 0;
+        if (currentVal === targetVal) return;
+
+        grandDisplay.style.transform = "scale(0.95) rotateX(15deg)";
+        
+        let startTimestamp = null;
+        const animationTimeDuration = 450;
+
+        function loopOdometer(timestamp) {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const elapsed = timestamp - startTimestamp;
+            const progress = Math.min(elapsed / animationTimeDuration, 1);
+            const easeValue = 1 - Math.pow(1 - progress, 4);
+            
+            const currentComputedIteration = currentVal + (targetVal - currentVal) * easeValue;
+            grandDisplay.innerText = `Rs. ${currentComputedIteration.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            if (progress < 1) {
+                window.requestAnimationFrame(loopOdometer);
+            } else {
+                grandDisplay.innerText = `Rs. ${targetVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                grandDisplay.style.transform = "scale(1) rotateX(0deg)";
+            }
+        }
+        window.requestAnimationFrame(loopOdometer);
+    }
+
+    function saveCounterRecord() {
+        if (currentItemCount === 0 && currentGrandTotal === 0) {
+            alert("Cannot commit an empty calculation matrix layer!");
+            return;
+        }
+
+        const now = new Date();
+        const fullTimestamp = `${now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })} at ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}`;
+
+        const breakdown = {};
+        allDenoms.forEach(denom => {
+            const val = parseInt(document.getElementById(`input-${denom}`).value, 10) || 0;
+            if (val > 0) breakdown[denom] = val;
+        });
+
+        let ledgerHistory = JSON.parse(localStorage.getItem('lkr_ledger_history')) || [];
+        ledgerHistory.unshift({ id: Date.now(), timestamp: fullTimestamp, itemCount: currentItemCount, grandTotal: currentGrandTotal, breakdown: breakdown });
+        localStorage.setItem('lkr_ledger_history', JSON.stringify(ledgerHistory));
+        
+        renderSavedHistory();
+        populateReportMonths();
+        
+        // Success Micro-Flash Effect Animation
+        const displayPanel = document.getElementById('totalDisplayPanel');
+        displayPanel.style.boxShadow = "0 0 40px rgba(16, 185, 129, 0.6)";
+        setTimeout(() => { displayPanel.style.boxShadow = "var(--shadow-md), var(--shadow-glow)"; }, 600);
+    }
+
+    function renderSavedHistory() {
+        const historyBody = document.getElementById('historyBody');
+        if (!historyBody) return;
+        const ledgerHistory = JSON.parse(localStorage.getItem('lkr_ledger_history')) || [];
+        historyBody.innerHTML = '';
+
+        if (ledgerHistory.length === 0) {
+            historyBody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:30px; color:var(--text-muted);">No logs documented in active runtime layout memory.</td></tr>`;
+            return;
+        }
+
+        ledgerHistory.forEach(item => {
+            const mainRow = document.createElement('tr');
+            mainRow.className = "clickable-row";
+            mainRow.setAttribute('onclick', `toggleDetailsDrawer(${item.id})`);
+            mainRow.innerHTML = `
+                <td style="font-weight: 600; color: var(--primary);">▼ ${item.timestamp}</td>
+                <td>${item.itemCount} units</td>
+                <td style="font-weight: 700; color: var(--success);">Rs. ${item.grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                <td style="text-align: center;" onclick="event.stopPropagation();">
+                    <button class="btn-delete-single" onclick="secureDeleteSingleRecord(${item.id})">🗑️</button>
+                </td>
+            `;
+
+            const detailsRow = document.createElement('tr');
+            detailsRow.id = `details-${item.id}`;
+            detailsRow.className = "details-row";
+            
+            let chipsHtml = '';
+            allDenoms.forEach(denom => {
+                const qty = item.breakdown && item.breakdown[denom] ? item.breakdown[denom] : 0;
+                if (qty > 0) {
+                    chipsHtml += `
+                        <div class="breakdown-chip">
+                            <span class="chip-label">Rs. ${denom}</span> 
+                            <span>×</span> 
+                            <span class="chip-count">${qty}</span> 
+                            <span>=</span> 
+                            <span class="chip-total">Rs. ${(denom * qty).toLocaleString()}</span>
+                        </div>
+                    `;
+                }
+            });
+
+            detailsRow.innerHTML = `
+                <td colspan="4">
+                    <div class="details-container">
+                        <div class="details-heading">Detailed Valuation Allocation Matrix:</div>
+                        <div class="breakdown-chips-grid">${chipsHtml || 'No structural metrics found.'}</div>
+                    </div>
+                </td>
+            `;
+
+            historyBody.appendChild(mainRow);
+            historyBody.appendChild(detailsRow);
+        });
+    }
+
+    function toggleDetailsDrawer(recordId) {
+        const drawer = document.getElementById(`details-${recordId}`);
+        drawer.style.display = drawer.style.display === "table-row" ? "none" : "table-row";
+    }
+
+    function secureDeleteSingleRecord(recordId) {
+        if (prompt("SECURITY RE-VERIFICATION:\nEnter Admin Token [0000] to drop this transaction record:") === MASTER_PASSWORD) {
+            let ledgerHistory = JSON.parse(localStorage.getItem('lkr_ledger_history')) || [];
+            localStorage.setItem('lkr_ledger_history', JSON.stringify(ledgerHistory.filter(item => item.id !== recordId)));
+            renderSavedHistory();
+            populateReportMonths();
+        } else {
+            alert("Security matrix key mismatch!");
+        }
+    }
+
+    function secureClearPermanentHistory() {
+        if (prompt("CRITICAL OPERATIONS PHALANX:\nEnter Master Database Password [1234] to drop historical structural matrix:") === MASTER_PASSWORD) {
+            localStorage.removeItem('lkr_ledger_history');
+            renderSavedHistory();
+            populateReportMonths();
+        } else {
+            alert("Operation unauthorized!");
+        }
+    }
+
+    function clearAllCounterInputs() {
+        document.querySelectorAll('.counter-input').forEach(input => input.value = '');
+        processCalculations();
+    }
+
+    function convertToLankanWords(num) {
+        if (num === 0) return "Zero Rupees";
+        const units = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+        const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+        function resolveBelowThousand(n) {
+            let chunkText = "";
+            if (n >= 100) { chunkText += units[Math.floor(n / 100)] + 'Hundred '; n %= 100; if (n > 0) chunkText += 'and '; }
+            if (n < 20) chunkText += units[n];
+            else chunkText += tens[Math.floor(n / 10)] + (n % 10 !== 0 ? ' ' + units[n % 10] : '') + ' ';
+            return chunkText;
+        }
+
+        let outString = '';
+        let crores = Math.floor(num / 10000000); num %= 10000000;
+        let lakhs = Math.floor(num / 100000); num %= 100000;
+        let thousands = Math.floor(num / 1000); num %= 1000;
+
+        if (crores > 0) outString += resolveBelowThousand(crores).trim() + ' Crore ';
+        if (lakhs > 0) outString += resolveBelowThousand(lakhs).trim() + ' Lakh ';
+        if (thousands > 0) outString += resolveBelowThousand(thousands).trim() + ' Thousand ';
+        if (num > 0) outString += resolveBelowThousand(num);
+
+        return outString.trim() + ' Rupees';
+    }
+
+    // --- NEW ADDITION: MONTHLY REPORT GENERATOR LOGIC ENGINE ---
+    function populateReportMonths() {
+        const monthSelect = document.getElementById('reportMonthSelect');
+        if (!monthSelect) return;
+        
+        const ledgerHistory = JSON.parse(localStorage.getItem('lkr_ledger_history')) || [];
+        const uniqueMonths = new Set();
+        
+        ledgerHistory.forEach(item => {
+            // Timestamp format: "Jan 01, 2026 at 12:00 PM" -> extract "Jan 2026"
+            const parts = item.timestamp.split(' ');
+            if (parts.length >= 3) {
+                const month = parts[0];
+                const year = parts[2];
+                uniqueMonths.add(`${month} ${year}`);
+            }
+        });
+
+        monthSelect.innerHTML = '';
+        if (uniqueMonths.size === 0) {
+            const current = new Date();
+            const fallbackKey = `${current.toLocaleDateString('en-US', { month: 'short' })} ${current.getFullYear()}`;
+            uniqueMonths.add(fallbackKey);
+        }
+
+        Array.from(uniqueMonths).forEach(monthKey => {
+            const opt = document.createElement('option');
+            opt.value = monthKey;
+            opt.innerText = monthKey;
+            monthSelect.appendChild(opt);
+        });
+    }
+
+    function downloadMonthlyPDFReport() {
+        const monthSelect = document.getElementById('reportMonthSelect');
+        if (!monthSelect || !monthSelect.value) {
+            alert("No data available to build a structured audit layer statement.");
+            return;
+        }
+        
+        const targetMonthYear = monthSelect.value; // e.g. "Jun 2026"
+        const ledgerHistory = JSON.parse(localStorage.getItem('lkr_ledger_history')) || [];
+        
+        // Filter transactions strictly matching the month selection
+        const monthlyRecords = ledgerHistory.filter(item => {
+            const parts = item.timestamp.split(' ');
+            if (parts.length >= 3) {
+                return `${parts[0]} ${parts[2]}` === targetMonthYear;
+            }
+            return false;
+        });
+
+        if (monthlyRecords.length === 0) {
+            alert(`No historical records found matching the timeline parameters of ${targetMonthYear}`);
+            return;
+        }
+
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+
+        // Calculate Grand Running Monthly Metrics
+        let aggregateValuation = 0;
+        let aggregateItemsCount = 0;
+        const totalDenominationBreakdown = {};
+        allDenoms.forEach(d => totalDenominationBreakdown[d] = 0);
+
+        monthlyRecords.forEach(rec => {
+            aggregateValuation += rec.grandTotal;
+            aggregateItemsCount += rec.itemCount;
+            if (rec.breakdown) {
+                Object.keys(rec.breakdown).forEach(denom => {
+                    totalDenominationBreakdown[denom] += (rec.breakdown[denom] || 0);
+                });
+            }
+        });
+
+        // 1. PDF DOCUMENT DESIGN SPECIFICATION: HEADERS
+        doc.setFillColor(15, 23, 42); // Navy Accent Theme
+        doc.rect(0, 0, 210, 40, 'F');
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(22);
+        doc.text("SHAKTHI PORTAL AUDIT REGISTRY", 15, 18);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(148, 163, 184);
+        doc.text(`Monthly Balance Sheet Financial Engine Output Statement`, 15, 25);
+        doc.text(`Target Processing Parameter Profile: ${targetMonthYear.toUpperCase()}`, 15, 30);
+
+        // 2. METRIC HIGHLIGHT HIGHLIGHT BOXES
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(15, 48, 180, 25, 3, 3, 'F');
+        doc.setDrawColor(226, 232, 240);
+        doc.roundedRect(15, 48, 180, 25, 3, 3, 'S');
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.setTextColor(71, 85, 105);
+        doc.text("GRAND MONTHLY REVENUE ACCUMULATION", 22, 56);
+        doc.setFontSize(20);
+        doc.setTextColor(16, 185, 129); // Success Green Accent
+        doc.text(`Rs. ${aggregateValuation.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 22, 66);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(71, 85, 105);
+        doc.text("AGGREGATE UNITS", 135, 56);
+        doc.setFontSize(16);
+        doc.setTextColor(15, 23, 42);
+        doc.text(`${aggregateItemsCount.toLocaleString()} Units`, 135, 66);
+
+        // Word Representation
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(9);
+        doc.setTextColor(100, 116, 139);
+        doc.text(`Amount in words: ${convertToLankanWords(aggregateValuation)} Only.`, 15, 80);
+
+        // 3. TABLE SECTION A: CONSOLIDATED DENOMINATION BREAKDOWN REPORT
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.setTextColor(15, 23, 42);
+        doc.text("1. Consolidated Denomination Volume Matrix", 15, 90);
+
+        const breakdownTableBody = [];
+        allDenoms.forEach(denom => {
+            const unitQty = totalDenominationBreakdown[denom] || 0;
+            const subSum = denom * unitQty;
+            breakdownTableBody.push([
+                `Rs. ${denom.toLocaleString()}`,
+                `${unitQty.toLocaleString()} Units`,
+                `Rs. ${subSum.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+            ]);
+        });
+
+        doc.autoTable({
+            startY: 94,
+            margin: { left: 15, right: 15 },
+            head: [['Denomination Type', 'Accumulated Item Units Count', 'Total Structural Valuation Mapping']],
+            body: breakdownTableBody,
+            theme: 'striped',
+            headStyles: { fillColor: [30, 41, 59], textColor: [255, 255, 255], fontStyle: 'bold' },
+            columnStyles: {
+                0: { fontStyle: 'bold' },
+                1: { halign: 'center' },
+                2: { halign: 'right', fontStyle: 'bold' }
+            }
+        });
+
+        // 4. TABLE SECTION B: TRANSACTION TIMELINE HISTORY LOGS
+        let currentYPosition = doc.lastAutoTable.finalY + 12;
+        
+        // Handle page overflow prevention checklist
+        if (currentYPosition > 230) {
+            doc.addPage();
+            currentYPosition = 20;
+        }
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.setTextColor(15, 23, 42);
+        doc.text("2. Chronological Ledger Operations History Streams", 15, currentYPosition);
+
+        const timelineTableBody = [];
+        // Process in reverse sorting to map sequential execution flow timeline
+        [...monthlyRecords].reverse().forEach(rec => {
+            timelineTableBody.push([
+                rec.timestamp,
+                `${rec.itemCount} Units`,
+                `Rs. ${rec.grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+            ]);
+        });
+
+        doc.autoTable({
+            startY: currentYPosition + 4,
+            margin: { left: 15, right: 15 },
+            head: [['Date & Execution Timestamp', 'Items Processed Volume', 'Valuation Matrix Magnitude Balance']],
+            body: timelineTableBody,
+            theme: 'grid',
+            headStyles: { fillColor: [79, 70, 229], textColor: [255, 255, 255], fontStyle: 'bold' },
+            columnStyles: {
+                0: { fontStyle: 'normal' },
+                1: { halign: 'center' },
+                2: { halign: 'right', fontStyle: 'bold' }
+            }
+        });
+
+        // FOOTER MARGIN SIGN OFF
+        let finalY = doc.lastAutoTable.finalY + 20;
+        if (finalY > 260) {
+            doc.addPage();
+            finalY = 30;
+        }
+        doc.setDrawColor(203, 213, 225);
+        doc.line(15, finalY, 195, finalY);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(148, 163, 184);
+        doc.text("Automated Secure Generation Core Engine - Shakthi Ithiri Systems Matrix Pro v4.0", 15, finalY + 6);
+        doc.text("System Management Authorization Signature Signature Required: ________________________", 110, finalY + 6);
+
+        // Execute browser save pipeline allocation
+        const sanitizedFilename = targetMonthYear.toLowerCase().replace(' ', '_');
+        doc.save(`shakthi_monthly_report_${sanitizedFilename}.pdf`);
+    }
+
+    function exportPermanentDatabaseHTML() {
+        let compiledOutputSource = document.documentElement.outerHTML.replace(JSON.stringify(defaultDataSeed), JSON.stringify(dataset));
+        compiledOutputSource = compiledOutputSource.replace('id="loginView"', 'id="loginView" style="display: none;"');
+        compiledOutputSource = compiledOutputSource.replace('id="mainView"', 'id="mainView" class="dashboard-wrapper active-view" style="display: block; opacity: 1;"');
+        
+        const persistentBlob = new Blob(["<!DOCTYPE html>\n" + compiledOutputSource], { type: "text/html" });
+        const temporaryAnchorElement = document.createElement("a");
+        temporaryAnchorElement.href = URL.createObjectURL(persistentBlob);
+        temporaryAnchorElement.download = "shakthi_upgraded.html";
+        temporaryAnchorElement.click();
+    }
+</script>
+</body>
+</html>
